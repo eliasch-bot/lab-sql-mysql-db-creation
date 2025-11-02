@@ -1,0 +1,54 @@
+CREATE SCHEMA concesionario;
+
+--  FOREIGN KEY (id_cliente) REFERENCES clientes (id_cliente) ON DELETE CASCADE,
+
+DROP TABLE coches;
+DROP TABLE vendedores;
+DROP TABLE clientes;
+DROP TABLE facturas;
+
+CREATE TABLE IF NOT EXISTS coches (
+	id  INT UNSIGNED NOT NULL AUTO_INCREMENT,
+    vin VARCHAR(100) NOT NULL,
+    fabricante VARCHAR(100) NOT NULL,
+    modelo VARCHAR(100) NOT NULL,
+    anio SMALLINT UNSIGNED NOT NULL, 
+    color VARCHAR(20) DEFAULT NULL,
+    PRIMARY KEY (id),
+    CONSTRAINT anio CHECK (anio BETWEEN 2000 and 2200)
+);
+
+CREATE TABLE IF NOT EXISTS vendedores (
+	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
+    nombre_empleado VARCHAR(100) NOT NULL,
+    tienda VARCHAR (50) NOT NULL,
+    PRIMARY KEY (id)
+);
+
+CREATE TABLE IF NOT EXISTS clientes (
+	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
+	id_cliente INT UNSIGNED NOT NULL,
+    nombre_cliente VARCHAR(100) NOT NULL,
+	telefono VARCHAR (40),
+    correo VARCHAR(100),
+    direccion VARCHAR(100) NOT NULL,
+    ciudad VARCHAR(25) NOT NULL,
+    estado VARCHAR(25) NOT NULL,
+    pais VARCHAR(25) NOT NULL,
+    cod_postal VARCHAR(25) NOT NULL,
+    PRIMARY KEY (id)
+);
+
+CREATE TABLE IF NOT EXISTS facturas (
+	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
+    n_factura VARCHAR(50) NOT NULL,
+    fecha DATE NOT NULL,
+    vin VARCHAR(100) NOT NULL,
+	id_coche INT UNSIGNED NOT NULL,
+    id_cliente INT UNSIGNED NOT NULL,
+    id_empleado INT UNSIGNED NOT NULL,
+    PRIMARY KEY (id),
+	FOREIGN KEY (id_coche) REFERENCES coches (id) ON DELETE CASCADE,
+    FOREIGN KEY (id_cliente) REFERENCES clientes (id) ON DELETE CASCADE,
+	FOREIGN KEY (id_empleado) REFERENCES vendedores (id) ON DELETE CASCADE
+  );
